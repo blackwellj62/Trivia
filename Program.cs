@@ -6,7 +6,7 @@ using Trivia.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient<TriviaApiService>();
+builder.Services.AddHttpClient<Trivia.Services.TriviaApiService>();
 builder.Services.AddControllers().AddJsonOptions(opts =>
 {
     opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

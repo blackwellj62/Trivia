@@ -10,8 +10,8 @@ namespace Trivia.Controllers;
 
 public class CategoriesController : ControllerBase
 {
-    private readonly TriviaApiService _triviaApiService;
-    public CategoriesController(TriviaApiService triviaApiService)
+    private readonly Services.TriviaApiService _triviaApiService;
+    public CategoriesController(Services.TriviaApiService triviaApiService)
     {
         _triviaApiService = triviaApiService;
     }
