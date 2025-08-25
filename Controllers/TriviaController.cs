@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Trivia.Data;
+using Trivia.Models;
+using Trivia.Services;
+using Trivia.DTOs;
 
 namespace Trivia.Controllers;
 
@@ -10,17 +11,43 @@ namespace Trivia.Controllers;
 
 public class CategoriesController : ControllerBase
 {
-    private readonly Services.TriviaApiService _triviaApiService;
-    public CategoriesController(Services.TriviaApiService triviaApiService)
+    private readonly TriviaDbContext _dbContext;
+    private readonly TriviaApiService _triviaApiService;
+    public CategoriesController(TriviaDbContext context, TriviaApiService triviaApiService)
     {
+        _dbContext = context;
         _triviaApiService = triviaApiService;
     }
 
     [HttpGet]
 
     public async Task<IActionResult> Get()
-    {
-        var categoriesJson = await _triviaApiService.GetCategoriesAsync();
-        return Ok(categoriesJson);
+        {
+            // If DB already has categories, return them
+            if (_dbContext.Categories.Any())
+            {
+                return Ok(_dbContext.Categories.ToList());
+            }
+
+            // Otherwise fetch from API
+            var categoriesFromApi = await _triviaApiService.GetCategoriesAsync();
+        if (categoriesFromApi == null || !categoriesFromApi.Any())
+        {
+            return StatusCode(500, "Unable to fetch categories from API");
+        }
+
+
+            // Map DTOs to EF entities
+        var categories = categoriesFromApi.Select(c => new Category
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToList();
+
+            // Save into DB
+            _dbContext.Categories.AddRange(categories);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(categories);
+        }
     }
-}

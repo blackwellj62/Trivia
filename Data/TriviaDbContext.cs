@@ -1,24 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-// using Trivia.Models;
-using Microsoft.AspNetCore.Identity;
+using Trivia.Models;
 
-namespace Trivia.Data;
-public class TriviaDbContext : IdentityDbContext<IdentityUser>
+namespace Trivia.Data
 {
-    private readonly IConfiguration _configuration;
-    
-    
-
-    public TriviaDbContext(DbContextOptions<TriviaDbContext> context, IConfiguration config) : base(context)
+    public class TriviaDbContext : DbContext
     {
-        _configuration = config;
-    }
+        public TriviaDbContext(DbContextOptions<TriviaDbContext> options) : base(options)
+        {
+        }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-
-        
+        public DbSet<Category> Categories { get; set; }  // 👈 This tells EF Core about Categories
     }
 }
