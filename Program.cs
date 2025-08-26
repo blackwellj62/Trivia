@@ -6,7 +6,10 @@ using Trivia.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient<Trivia.Services.TriviaApiService>();
+builder.Services.AddHttpClient<Trivia.Services.TriviaApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://opentdb.com/");
+});
 builder.Services.AddControllers().AddJsonOptions(opts =>
 {
     opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
