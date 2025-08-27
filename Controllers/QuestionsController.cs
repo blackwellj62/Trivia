@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Trivia.Data;
 using Trivia.Models;
 using Trivia.Services;
+using Trivia.DTOs;
 
 namespace Trivia.Controllers
 {
@@ -77,6 +78,51 @@ namespace Trivia.Controllers
             });
 
             return Ok(response);
+        }
+
+
+        [HttpPost("{questionId}/check")]
+        public async Task<IActionResult> CheckAnswer(int questionId, [FromBody] CheckAnswerRequest request)
+        {
+            // 1) Basic request validation
+            if (request == null)
+                return BadRequest("Request body required.");
+            if (request.AnswerId <= 0)
+                return BadRequest("A valid AnswerId is required.");
+
+            // 2) Load the question and its answers from the DB (eager-load answers)
+            var question = await _dbContext.Questions
+                .Include(q => q.Answers)
+                .FirstOrDefaultAsync(q => q.Id == questionId);
+
+            if (question == null)
+                return NotFound($"Question with id {questionId} not found.");
+
+            // 3) Find the chosen answer among the loaded question answers
+            var chosen = question.Answers.FirstOrDefault(a => a.Id == request.AnswerId);
+            if (chosen == null)
+            {
+                // either answer doesn't exist, or it doesn't belong to this question
+                return BadRequest("The selected answer does not belong to the requested question.");
+            }
+
+            // 4) Determine correctness
+            // We compare the chosen answer's text to the question's stored CorrectAnswer.
+            // Use trim + ordinal ignore-case to avoid false negatives due to whitespace/casing.
+            var isCorrect = string.Equals(
+                chosen.Text?.Trim(),
+                question.CorrectAnswer?.Trim(),
+                StringComparison.OrdinalIgnoreCase);
+
+            // 5) (Optional) Persist attempt / increment statistics, etc. - omitted for now
+
+            // 6) Return a small result object the frontend can use
+            return Ok(new
+            {
+                questionId = question.Id,
+                selectedAnswerId = chosen.Id,
+                isCorrect = isCorrect
+            });
         }
     }
 }
