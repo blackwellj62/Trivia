@@ -21,7 +21,7 @@ const [categories, setCategories] = useState([])
          <select className="category-menu">
             <option value="0">Choose a Category</option>
             {categories.map(category =>
-                <option value={category.id}>{category.name}</option>
+                <option value={category.id} key={category.id}>{category.name}</option>
             )}
          </select>
         </div>

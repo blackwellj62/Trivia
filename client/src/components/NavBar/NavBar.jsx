@@ -54,8 +54,8 @@ export default function NavBar() {
                 </RRNavLink>
               </li>
               <li className="nav-item">
-                <RRNavLink to="categories" className="nav-link" onClick={closeOffcanvas}>
-                Categories
+                <RRNavLink to="quiz" className="nav-link" onClick={closeOffcanvas}>
+                Quiz
                 </RRNavLink>
               </li>
              
