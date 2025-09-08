@@ -25,6 +25,9 @@ const [categories, setCategories] = useState([])
             )}
          </select>
         </div>
+        <div>
+            <button>Start Quiz</button>
+        </div>
         </>
     )
 }
