@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 export const Home = () => {
 const [categories, setCategories] = useState([])
+const [chosenCategory, setChosenCategory] = useState({})
 const navigate = useNavigate()
 
     useEffect(()=>{
@@ -20,7 +21,7 @@ const navigate = useNavigate()
             <img src={TriviaShmivia} alt="Trivia Shmivia Logo" className="home-logo"/>
         </div>
         <div>
-         <select className="category-menu">
+         <select className="category-menu" onChange={(event)=>{setChosenCategory(event.target.value)}}>
             <option value="0">Choose a Category</option>
             {categories.map(category =>
                 <option value={category.id} key={category.id}>{category.name}</option>
@@ -28,7 +29,7 @@ const navigate = useNavigate()
          </select>
         </div>
         <div>
-            <button onClick={()=>{navigate("/quiz")}}>Start Quiz</button>
+            <button onClick={()=>{navigate(`/quiz?category=${chosenCategory}`)}}>Start Quiz</button>
         </div>
         </>
     )
