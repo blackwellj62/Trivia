@@ -2,9 +2,11 @@ import TriviaShmivia from "/src/assets/TriviaShmiviaLogo.png"
 import "./Home.css"
 import { useEffect, useState } from "react"
 import { getCategories } from "../managers/categoryManager.js"
+import { useNavigate } from "react-router-dom"
 
 export const Home = () => {
 const [categories, setCategories] = useState([])
+const navigate = useNavigate()
 
     useEffect(()=>{
         getCategories().then(categoryArray=>{
@@ -26,7 +28,7 @@ const [categories, setCategories] = useState([])
          </select>
         </div>
         <div>
-            <button>Start Quiz</button>
+            <button onClick={()=>{navigate("/quiz")}}>Start Quiz</button>
         </div>
         </>
     )
