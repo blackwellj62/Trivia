@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 export const Home = () => {
 const [categories, setCategories] = useState([])
-const [chosenCategory, setChosenCategory] = useState({})
+const [chosenCategory, setChosenCategory] = useState("0")
 const navigate = useNavigate()
 
     useEffect(()=>{
@@ -29,7 +29,10 @@ const navigate = useNavigate()
          </select>
         </div>
         <div>
-            <button onClick={()=>{navigate(`/quiz?category=${chosenCategory}`)}}>Start Quiz</button>
+            <button onClick={()=> {if (chosenCategory!= "0"){
+                {navigate(`/quiz?category=${chosenCategory}`)}
+            }}}>
+                Start Quiz</button>
         </div>
         </>
     )
