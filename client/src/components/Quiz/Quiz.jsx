@@ -11,12 +11,27 @@ const [currentIndex, setCurrentIndex] = useState(0)
 // const [loading, setLoading] = useState("false")
 // const [selectedAnswer, setSelectedAnswer] = useState({})
 
-useEffect(()=>{
-   getQuestions(categoryId).then(data=>{
-    const questObj = data
-    setQuestions(questObj)
-   }) 
-},[categoryId])
+const shuffleArray = (array)=>{
+    const copy = {...array}
+    for (let i = copy.length - 1; i > 0; i --){
+        const j = Math.floor(Math.random * (i + 1))
+        ;[copy[1],copy[j]] = [copy[j],copy[i]]
+    }
+    return copy
+}
+
+
+useEffect(() => {
+  getQuestions(categoryId).then(data => {
+    const withShuffled = data.map(q => {
+      const allAnswers = [...q.answers.map(a => a.text), q.correctAnswer];
+      const shuffled = allAnswers.sort(() => Math.random() - 0.5);
+      return { ...q, allAnswers: shuffled };
+    });
+
+    setQuestions(withShuffled);
+  });
+}, [categoryId])
 
 if (questions.length === 0){
     return <p>Loading Questions...</p>
@@ -38,10 +53,9 @@ const currentQuestion = questions[currentIndex]
         <div>
             <h2>{currentQuestion.text}</h2>
             <ul>
-                {currentQuestion.answers.map(answer=>(
-                    <li key={answer.id}>{answer.text}</li>
-                ))}
-                <li>{currentQuestion.correctAnswer}</li>
+                {currentQuestion.allAnswers.map((answer, idx) => (
+        <li key={idx}>{answer}</li>
+      ))}
             </ul>
             <button onClick={()=>setCurrentIndex(currentIndex + 1)}
                 disabled={currentIndex >= questions.length - 1}>
