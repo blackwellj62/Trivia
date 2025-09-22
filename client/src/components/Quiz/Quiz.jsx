@@ -34,6 +34,10 @@ const currentQuestion = questions[currentIndex]
                 ))}
                 <li>{currentQuestion.correctAnswer}</li>
             </ul>
+            <button onClick={()=>setCurrentIndex(currentIndex + 1)}
+                disabled={currentIndex >= questions.length - 1}>
+                Next
+            </button>
         </div>
     )
 }
