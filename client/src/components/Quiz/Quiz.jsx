@@ -22,6 +22,15 @@ if (questions.length === 0){
     return <p>Loading Questions...</p>
 }
 
+if (currentIndex >= questions.length){
+    return(
+        <div>
+            <h2>Quiz Complete!</h2>
+            <button onClick={()=>setCurrentIndex(0)}>Restart</button>
+        </div>
+    )
+}
+
 const currentQuestion = questions[currentIndex]
 
 
