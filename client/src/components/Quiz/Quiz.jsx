@@ -9,7 +9,7 @@ const [questions, setQuestions] = useState([])
 const [currentIndex, setCurrentIndex] = useState(0)
 // const [score, setScore] = useState("0")
 // const [loading, setLoading] = useState("false")
-// const [selectedAnswer, setSelectedAnswer] = useState({})
+ const [selectedAnswer, setSelectedAnswer] = useState({})
 
 
 
@@ -47,7 +47,7 @@ const currentQuestion = questions[currentIndex]
             <h2>{currentQuestion.text}</h2>
             <ul>
                 {currentQuestion.allAnswers.map((answer, idx) => (
-        <li key={idx}><button>{answer}</button></li>
+        <li key={idx}><button onClick={()=>setSelectedAnswer(answer)}>{answer}</button></li>
       ))}
             </ul>
             <button onClick={()=>setCurrentIndex(currentIndex + 1)}
