@@ -11,14 +11,7 @@ const [currentIndex, setCurrentIndex] = useState(0)
 // const [loading, setLoading] = useState("false")
 // const [selectedAnswer, setSelectedAnswer] = useState({})
 
-const shuffleArray = (array)=>{
-    const copy = {...array}
-    for (let i = copy.length - 1; i > 0; i --){
-        const j = Math.floor(Math.random * (i + 1))
-        ;[copy[1],copy[j]] = [copy[j],copy[i]]
-    }
-    return copy
-}
+
 
 
 useEffect(() => {
@@ -54,7 +47,7 @@ const currentQuestion = questions[currentIndex]
             <h2>{currentQuestion.text}</h2>
             <ul>
                 {currentQuestion.allAnswers.map((answer, idx) => (
-        <li key={idx}>{answer}</li>
+        <li key={idx}><button>{answer}</button></li>
       ))}
             </ul>
             <button onClick={()=>setCurrentIndex(currentIndex + 1)}
