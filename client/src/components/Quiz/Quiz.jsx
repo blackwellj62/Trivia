@@ -7,9 +7,9 @@ const [searchParams] = useSearchParams();
 const categoryId = searchParams.get("category")
 const [questions, setQuestions] = useState([])
 const [currentIndex, setCurrentIndex] = useState(0)
-// const [score, setScore] = useState("0")
+ const [score, setScore] = useState(0)
 // const [loading, setLoading] = useState("false")
- const [selectedAnswer, setSelectedAnswer] = useState({})
+ const [selectedAnswer, setSelectedAnswer] = useState(null)
 
 
 
@@ -34,7 +34,10 @@ if (currentIndex >= questions.length){
     return(
         <div>
             <h2>Quiz Complete!</h2>
-            <button onClick={()=>setCurrentIndex(0)}>Restart</button>
+            <button onClick={()=>{
+            setCurrentIndex(0);
+            setScore(0)}}>
+            Restart</button>
         </div>
     )
 }
@@ -50,8 +53,13 @@ const currentQuestion = questions[currentIndex]
         <li key={idx}><button onClick={()=>setSelectedAnswer(answer)}>{answer}</button></li>
       ))}
             </ul>
-            <button onClick={()=>setCurrentIndex(currentIndex + 1)}
-                disabled={currentIndex >= questions.length - 1}>
+            <button onClick={()=>{
+                if (selectedAnswer === currentQuestion.correctAnswer){
+                    setScore(prev=> prev + 1)
+                }
+                setSelectedAnswer(null);
+                setCurrentIndex(currentIndex + 1)}}
+                >
                 Next
             </button>
         </div>
