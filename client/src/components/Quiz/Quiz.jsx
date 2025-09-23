@@ -8,9 +8,9 @@ const [searchParams] = useSearchParams();
 const categoryId = searchParams.get("category")
 const [questions, setQuestions] = useState([])
 const [currentIndex, setCurrentIndex] = useState(0)
- const [score, setScore] = useState(0)
-// const [loading, setLoading] = useState("false")
- const [selectedAnswer, setSelectedAnswer] = useState(null)
+const [score, setScore] = useState(0)
+const [selectedAnswer, setSelectedAnswer] = useState(null)
+const [isAnswered, setIsAnswered] = useState(false)
  const navigate = useNavigate()
 
 
@@ -49,23 +49,55 @@ if (currentIndex >= questions.length){
 const currentQuestion = questions[currentIndex]
 
 
-    return(
-        <div>
-            <h2>{currentQuestion.text}</h2>
-            <ul>
-                {currentQuestion.allAnswers.map((answer, idx) => (
-        <li key={idx}><button onClick={()=>setSelectedAnswer(answer)}>{answer}</button></li>
-      ))}
-            </ul>
-            <button onClick={()=>{
-                if (selectedAnswer === currentQuestion.correctAnswer){
-                    setScore(prev=> prev + 1)
-                }
-                setSelectedAnswer(null);
-                setCurrentIndex(currentIndex + 1)}}
-                >
-                Next
+    return (
+  <div>
+    <h2>{currentQuestion.text}</h2>
+
+    <ul>
+      {currentQuestion.allAnswers.map((answer, idx) => {
+        let className = "answer-btn";
+
+        if (isAnswered) {
+          if (answer === currentQuestion.correctAnswer) {
+            className += " correct";
+          } else if (answer === selectedAnswer) {
+            className += " incorrect";
+          }
+        } else if (selectedAnswer === answer) {
+          className += " selected";
+        }
+
+        return (
+          <li key={idx}>
+            <button
+              className={className}
+              onClick={() => !isAnswered && setSelectedAnswer(answer)}
+              disabled={isAnswered}   // 🔹 disables all buttons once submitted
+            >
+              {answer}
             </button>
-        </div>
-    )
+          </li>
+        );
+      })}
+    </ul>
+
+    <button
+      onClick={() => {
+        if (!isAnswered) {
+          if (selectedAnswer === currentQuestion.correctAnswer) {
+            setScore(prev => prev + 1);
+          }
+          setIsAnswered(true); // lock answers + show feedback
+        } else {
+          setSelectedAnswer(null);
+          setIsAnswered(false);
+          setCurrentIndex(currentIndex + 1); // move on
+        }
+      }}
+      disabled={!selectedAnswer && !isAnswered}
+    >
+      {isAnswered ? "Next" : "Submit"}
+    </button>
+  </div>
+);
 }

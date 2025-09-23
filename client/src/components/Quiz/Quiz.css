@@ -1,3 +1,28 @@
 li{
     list-style: none;
 }
+
+.answer-btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  background-color: #2e2d2d;
+  border: 1px solid #c49b17;
+}
+
+.answer-btn:hover {
+  background-color: #050505;
+}
+
+.answer-btn.selected {
+  background-color: rgb(57, 120, 236);
+}
+
+.answer-btn.correct {
+  background-color: rgb(48, 173, 48);
+}
+
+.answer-btn.incorrect {
+  background-color: rgb(236, 77, 59);
+}
