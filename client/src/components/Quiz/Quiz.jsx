@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { getQuestions } from "../../managers/questionsManager.js";
+import "./Quiz.css"
 
 export const Quiz = () => {
 const [searchParams] = useSearchParams();
