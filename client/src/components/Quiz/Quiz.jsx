@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { getQuestions } from "../../managers/questionsManager.js";
 
 export const Quiz = () => {
@@ -10,6 +10,7 @@ const [currentIndex, setCurrentIndex] = useState(0)
  const [score, setScore] = useState(0)
 // const [loading, setLoading] = useState("false")
  const [selectedAnswer, setSelectedAnswer] = useState(null)
+ const navigate = useNavigate()
 
 
 
@@ -34,10 +35,12 @@ if (currentIndex >= questions.length){
     return(
         <div>
             <h2>Quiz Complete!</h2>
+            <p>Your Score: {score} out of {questions.length}</p>
             <button onClick={()=>{
             setCurrentIndex(0);
             setScore(0)}}>
             Restart</button>
+            <button onClick={()=>{navigate("/")}}>Home</button>
         </div>
     )
 }
