@@ -51,6 +51,7 @@ const currentQuestion = questions[currentIndex]
 
     return (
   <div>
+    <h3>Question: {currentIndex + 1}/{questions.length}</h3>
     <h2>{currentQuestion.text}</h2>
 
     <ul>
