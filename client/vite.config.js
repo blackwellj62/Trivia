@@ -17,5 +17,8 @@ return {
     outDir: "build",
     },
     plugins: [react()],
+     resolve: {
+    dedupe: ['react', 'react-dom'],
+  },
 };
 });
