@@ -3,6 +3,7 @@ import { Home } from "./Home.jsx";
 import { Quiz } from "./Quiz/Quiz.jsx";
 import { Profile } from "./Profile.jsx";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import { Welcome } from "./Welcome.jsx";
 
 
 
@@ -12,7 +13,19 @@ export default function ApplicationViews() {
       <Route path="/"/>
         <Route
           index
-          element={<Home />}/>
+          element={<Welcome />}/>
+        
+       <Route path="/home" 
+       element={
+        <>
+        <SignedIn>
+       <Home/>
+       </SignedIn>
+       <SignedOut>
+        <RedirectToSignIn/>
+       </SignedOut>
+       </>
+       }/> 
        
        <Route path="/quiz" 
        element={

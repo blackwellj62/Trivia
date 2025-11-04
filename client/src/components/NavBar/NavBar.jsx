@@ -57,7 +57,7 @@ export default function NavBar() {
           <div className="offcanvas-body">
             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li className="nav-item">
-                <RRNavLink to="/" className="nav-link" onClick={closeOffcanvas}>
+                <RRNavLink to="home" className="nav-link" onClick={closeOffcanvas}>
                 Home
                 </RRNavLink>
               </li>
