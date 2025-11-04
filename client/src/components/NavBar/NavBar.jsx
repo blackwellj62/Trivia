@@ -1,4 +1,5 @@
 import { Link, NavLink as RRNavLink, useNavigate } from "react-router-dom";
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/clerk-react";
 import "./NavBar.css";
 import { Offcanvas } from "bootstrap"
 import TriviaShmivia from "/src/assets/TriviaShmiviaLogo.png"
@@ -35,10 +36,17 @@ export default function NavBar() {
           aria-labelledby="offcanvasDarkNavbarLabel"
         >
           <div className="offcanvas-header">
-        <RRNavLink className="navbar-brand d-flex align-items-center" to="/">
-          <img src={TriviaShmivia} alt="Trivia Shmivia Logo" className="logo me-2" />
-          
-        </RRNavLink>
+          <img src={TriviaShmivia} alt="Trivia Shmivia Logo" className="navbar-logo" />
+        <div className="auth-section">
+        <SignedIn>
+          <UserButton signOutRedirectUrl="/" />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button className="sign-in-btn">Sign In</button>
+          </SignInButton>
+        </SignedOut>
+      </div>
             <button
               type="button"
               className="btn-close btn-close-white"
