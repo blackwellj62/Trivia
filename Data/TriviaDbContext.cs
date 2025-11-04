@@ -12,5 +12,6 @@ namespace Trivia.Data
         public DbSet<Category> Categories { get; set; }  // 👈 This tells EF Core about Categories
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<UserQuizResult> UserQuizResults { get; set; }
     }
 }
