@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./Home.jsx";
 import { Quiz } from "./Quiz/Quiz.jsx";
-import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import { Profile } from "./Profile.jsx";
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 
 
 
@@ -16,11 +16,25 @@ export default function ApplicationViews() {
        
        <Route path="/quiz" 
        element={
-        <ProtectedRoute>
+        <>
+        <SignedIn>
        <Quiz/>
-       </ProtectedRoute>
+       </SignedIn>
+       <SignedOut>
+        <RedirectToSignIn/>
+       </SignedOut>
+       </>
        }/>
-       <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
+       <Route path="/profile" element={
+          <>
+            <SignedIn>
+              <Profile />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
+          </>
+        }/>
         
       <Route path="*" element={<p>Whoops, nothing here...</p>} />
     </Routes>
