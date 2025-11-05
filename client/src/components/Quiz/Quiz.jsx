@@ -14,6 +14,7 @@ const [score, setScore] = useState(0)
 const [selectedAnswer, setSelectedAnswer] = useState(null)
 const [isAnswered, setIsAnswered] = useState(false)
 const [resultSaved, setResultSaved] = useState(false);
+const [showRestartModal, setShowRestartModal] = useState(false);
 const {user} = useUser()
 const navigate = useNavigate()
 
@@ -66,11 +67,29 @@ if (currentIndex >= questions.length){
       ) : (
         <p className="saving-message">Saving your result...</p>
       )}
-            <button onClick={()=>{
-            setCurrentIndex(0);
-            setScore(0)}}>
-            Restart</button>
+            <button onClick={() => setShowRestartModal(true)}>Restart</button>
             <button onClick={()=>{navigate("/")}}>Home</button>
+            {showRestartModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <h3>Restart Quiz?</h3>
+      <p>Are you sure you want to restart? Your current score will be lost.</p>
+      <button
+        onClick={() => {
+          setCurrentIndex(0);
+          setScore(0);
+          setSelectedAnswer(null);
+          setIsAnswered(false);
+          setResultSaved(false);
+          setShowRestartModal(false); // close modal
+        }}
+      >
+        Yes
+      </button>
+      <button onClick={() => setShowRestartModal(false)}>Cancel</button>
+    </div>
+  </div>
+)}
         </div>
     )
 }
