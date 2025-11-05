@@ -3,6 +3,7 @@ import "./Home.css"
 import { useNavigate } from "react-router-dom"
 
 export const Welcome = () => {
+    const navigate = useNavigate()
 
 
     return(
@@ -10,7 +11,9 @@ export const Welcome = () => {
         <div className="home-container">
             <img src={TriviaShmivia} alt="Trivia Shmivia Logo" className="home-logo"/>
         </div>
-        
+        <button onClick={()=>{navigate("/home")}}>
+            Enter
+        </button>
         </>
     )
 }
