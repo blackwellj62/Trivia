@@ -13,6 +13,7 @@ const [currentIndex, setCurrentIndex] = useState(0)
 const [score, setScore] = useState(0)
 const [selectedAnswer, setSelectedAnswer] = useState(null)
 const [isAnswered, setIsAnswered] = useState(false)
+const [resultSaved, setResultSaved] = useState(false);
 const {user} = useUser()
 const navigate = useNavigate()
 
@@ -42,10 +43,13 @@ useEffect(() => {
     };
 
     saveQuizResult(quizData)
-      .then(() => console.log("✅ Quiz result saved"))
+      .then(() => {
+        console.log("✅ Quiz result saved");
+        setResultSaved(true); // mark as saved
+      })
       .catch((err) => console.error("Error saving result:", err));
   }
-}, [currentIndex]);
+}, [currentIndex, questions.length, score, user?.id, categoryId, resultSaved]);
 
 if (questions.length === 0){
     return <p>Loading Questions...</p>
@@ -57,6 +61,11 @@ if (currentIndex >= questions.length){
         <div>
             <h2>Quiz Complete!</h2>
             <p>Your Score: {score} out of {questions.length}</p>
+            {resultSaved ? (
+        <p className="saved-message">✅ Result saved successfully!</p>
+      ) : (
+        <p className="saving-message">Saving your result...</p>
+      )}
             <button onClick={()=>{
             setCurrentIndex(0);
             setScore(0)}}>
