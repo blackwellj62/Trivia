@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { getQuestions } from "../../managers/questionsManager.js";
+import { useUser } from "@clerk/clerk-react";
 import "./Quiz.css"
+import { saveQuizResult } from "../../managers/quizResultsManager.js";
 
 export const Quiz = () => {
 const [searchParams] = useSearchParams();
@@ -11,7 +13,8 @@ const [currentIndex, setCurrentIndex] = useState(0)
 const [score, setScore] = useState(0)
 const [selectedAnswer, setSelectedAnswer] = useState(null)
 const [isAnswered, setIsAnswered] = useState(false)
- const navigate = useNavigate()
+const {user} = useUser()
+const navigate = useNavigate()
 
 
 
@@ -23,14 +26,31 @@ useEffect(() => {
       const shuffled = allAnswers.sort(() => Math.random() - 0.5);
       return { ...q, allAnswers: shuffled };
     });
-
+    
     setQuestions(withShuffled);
   });
 }, [categoryId])
 
+useEffect(() => {
+  if (currentIndex === questions.length && questions.length > 0) {
+    // Save the user's result
+    const quizData = {
+      userId: user.id,
+      categoryId: parseInt(categoryId),
+      score: score,
+      totalQuestions: questions.length
+    };
+
+    saveQuizResult(quizData)
+      .then(() => console.log("✅ Quiz result saved"))
+      .catch((err) => console.error("Error saving result:", err));
+  }
+}, [currentIndex]);
+
 if (questions.length === 0){
     return <p>Loading Questions...</p>
 }
+
 
 if (currentIndex >= questions.length){
     return(
