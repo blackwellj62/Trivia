@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/clerk-react"
 import { useState, useEffect } from "react"
-
+import "./Profile.css"
 
 
 export const Profile = () => {
